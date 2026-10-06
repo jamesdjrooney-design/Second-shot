@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Second Shot</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;background:#f4f1e8;color:#17251b}.wrap{max-width:620px;margin:auto;padding:18px}.hero{background:#173d28;color:#fff;padding:25px 20px;border-radius:20px;margin-bottom:14px}.hero h1{margin:0;font-size:36px;letter-spacing:1px}.hero p{margin:6px 0 0}.card{background:#fff;border-radius:18px;padding:18px;margin:12px 0;box-shadow:0 2px 10px #0001}.product{display:flex;align-items:center;justify-content:space-between;gap:16px}.price{font-weight:800;font-size:20px;margin-top:4px}.controls{display:flex;align-items:center;gap:10px}.btn{width:52px;height:52px;border:0;border-radius:14px;background:#173d28;color:#fff;font-size:30px;font-weight:700;line-height:1;cursor:pointer;touch-action:manipulation}.btn:active{transform:scale(.94)}.qty{font-size:23px;font-weight:700;min-width:28px;text-align:center}label{font-weight:600;display:block;margin-top:4px}input,textarea{width:100%;padding:13px;border:1px solid #ccc;border-radius:11px;margin:7px 0 12px;font-size:16px;font-family:inherit}textarea{resize:vertical}.total{font-size:27px;font-weight:800}.order{width:100%;padding:17px;border:0;border-radius:13px;background:#173d28;color:#fff;font-size:18px;font-weight:800;cursor:pointer;touch-action:manipulation}.order:active{transform:scale(.98)}.hint{font-size:13px;color:#666;margin-top:10px;line-height:1.4}@media(max-width:430px){.product{align-items:center}.hero h1{font-size:32px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><h1>SECOND SHOT</h1><p>Quality golf balls. Another chance.</p></div>
+
+  <div class="card product">
+    <div><b>Titleist Pro V1</b><br>6-pack<div class="price">$18.00</div></div>
+    <div class="controls"><button class="btn" id="sixMinus" type="button">−</button><span class="qty" id="sixQty">0</span><button class="btn" id="sixPlus" type="button">+</button></div>
+  </div>
+
+  <div class="card product">
+    <div><b>Titleist Pro V1</b><br>12-pack<div class="price">$28.99</div></div>
+    <div class="controls"><button class="btn" id="twelveMinus" type="button">−</button><span class="qty" id="twelveQty">0</span><button class="btn" id="twelvePlus" type="button">+</button></div>
+  </div>
+
+  <div class="card">
+    <label for="name">Name</label><input id="name" autocomplete="name" placeholder="Your name">
+    <label for="phone">Phone</label><input id="phone" type="tel" autocomplete="tel" placeholder="Your phone number">
+    <label for="notes">Notes</label><textarea id="notes" rows="3" placeholder="Anything else?"></textarea>
+    <p>Total: <span id="total" class="total">$0.00</span></p>
+    <button class="order" id="orderBtn" type="button">ORDER BY TEXT</button>
+    <div class="hint">Tapping the button opens your phone's Messages app with the order ready to send.</div>
+  </div>
+</div>
+<script>
+(function(){
+  let six=0,twelve=0;
+  const $=id=>document.getElementById(id);
+  function render(){ $('sixQty').textContent=six; $('twelveQty').textContent=twelve; $('total').textContent='$'+(six*18+twelve*28.99).toFixed(2); }
+  $('sixMinus').addEventListener('click',()=>{six=Math.max(0,six-1);render()});
+  $('sixPlus').addEventListener('click',()=>{six++;render()});
+  $('twelveMinus').addEventListener('click',()=>{twelve=Math.max(0,twelve-1);render()});
+  $('twelvePlus').addEventListener('click',()=>{twelve++;render()});
+  $('orderBtn').addEventListener('click',()=>{
+    const total=six*18+twelve*28.99;
+    if(total===0){alert('Please add at least one golf-ball pack.');return;}
+    let msg='SECOND SHOT ORDER\nCustomer: '+$('name').value+'\nCustomer phone: '+$('phone').value+'\n';
+    if(six) msg+='Pro V1 6-pack x'+six+' = $'+(six*18).toFixed(2)+'\n';
+    if(twelve) msg+='Pro V1 12-pack x'+twelve+' = $'+(twelve*28.99).toFixed(2)+'\n';
+    msg+='TOTAL: $'+total.toFixed(2)+'\nNotes: '+$('notes').value;
+    window.location.href='sms:0478373090?body='+encodeURIComponent(msg);
+  });
+  render();
+})();
+</script>
+</body>
+</html>
